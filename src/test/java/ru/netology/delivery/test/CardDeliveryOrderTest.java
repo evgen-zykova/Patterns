@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
-import ru.netology.delivery.data.User;
+import ru.netology.delivery.data.DataGenerator;
 
 import java.time.Duration;
 
@@ -19,14 +19,14 @@ import static ru.netology.delivery.data.DataGenerator.generateUser;
 public class CardDeliveryOrderTest {
 
     @BeforeEach
-    void SetUp() {
+    void setUp() {
         open("http://localhost:9999");
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
     }
 
     @Test
     void shouldSuccessfulPlanAndReplanMeeting() {
-        User user = generateUser();
+        DataGenerator.UserInfo user = generateUser();
         $("[data-test-id=city] input").setValue(user.getCity());
         $(".calendar-input input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $(".calendar-input input").setValue(generateDate(6));
@@ -44,8 +44,6 @@ public class CardDeliveryOrderTest {
         $(".button__text").click();
         $("[data-test-id=success-notification]").shouldBe(Condition.visible, Duration.ofSeconds(150)).shouldHave(exactText("Успешно! Встреча успешно запланирована на " + generateDate(7)));
     }
-
-
 }
 
 

@@ -1,11 +1,11 @@
 package ru.netology.delivery.data;
 
 import com.github.javafaker.Faker;
+import lombok.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DataGenerator {
     private DataGenerator() {
@@ -14,14 +14,6 @@ public class DataGenerator {
     public static class Redistration {
         private Redistration() {
         }
-    }
-
-    static {
-        new Faker(new Locale("ru"));
-    }
-
-    public static User generateUser() {
-        return new User(generateCity(), generateDate(6), generateName(), generatePhone());
     }
 
     public static String generateDate(int days) {
@@ -36,13 +28,25 @@ public class DataGenerator {
 
     public static String generateName() {
         Faker faker = new Faker(new Locale("ru"));
-        AtomicReference<String> randomName = new AtomicReference<>(faker.name().firstName() + " " + faker.name().lastName());
-        return randomName.get();
+        String name = faker.name().fullName();
+        return name;
     }
 
     public static String generatePhone() {
         Faker faker = new Faker(new Locale("ru"));
         return faker.phoneNumber().phoneNumber();
+    }
+
+    public static UserInfo generateUser() {
+        UserInfo user = new UserInfo(generateCity(), generateName(), generatePhone());
+        return user;
+    }
+
+    @Value
+    public static class UserInfo {
+        String city;
+        String name;
+        String phone;
     }
 }
 
