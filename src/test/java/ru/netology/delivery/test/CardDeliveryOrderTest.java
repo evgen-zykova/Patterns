@@ -4,15 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import ru.netology.delivery.data.DataGenerator;
-import ru.netology.delivery.data.UserInfo;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static ru.netology.delivery.data.DataGenerator.Registration.generateDate;
+import static ru.netology.delivery.data.DataGenerator.generateDate;
 
 
 public class CardDeliveryOrderTest {
-    UserInfo user = DataGenerator.Registration.generateUser("ru");
 
     @BeforeEach
     void setUp() {
@@ -22,11 +20,12 @@ public class CardDeliveryOrderTest {
 
     @Test
     void shouldSuccessfulPlanAndReplanMeeting() {
-        $("[data-test-id=city] input").setValue(user.getCity());
+        var userInfo = DataGenerator.Registration.generateUser();
+        $("[data-test-id=city] input").setValue(userInfo.getCity());
         $(".calendar-input input").doubleClick().sendKeys(Keys.BACK_SPACE);
         $(".calendar-input input").setValue(generateDate(6));
-        $("[data-test-id=name] input").setValue(user.getName());
-        $("[data-test-id=phone] input").setValue(user.getNumber());
+        $("[data-test-id=name] input").setValue(userInfo.getName());
+        $("[data-test-id=phone] input").setValue(userInfo.getPhone());
         $("[data-test-id=agreement]").click();
         $(".button").click();
         $("[data-test-id=success-notification]")
